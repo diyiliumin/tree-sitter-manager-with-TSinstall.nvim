@@ -13,6 +13,7 @@ function M.ext()
 end
 
 function M.ppath(l) return config.cfg.parser_dir .. "/" .. l .. M.ext() end
+function M.ppath_2(l) return config.cfg.parser_dir_2 .. "/" .. l .. M.ext() end
 function M.qpath(l) return config.cfg.query_dir .. "/" .. l end
 
 function M.run_cmd(args, cwd, callback)

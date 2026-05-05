@@ -11,7 +11,7 @@ local function get_status_icon(lang)
     if installer.is_only_query(lang) then
         if not vim.uv.fs_stat(util.qpath(lang)) then return "❌" end
     else
-        if not vim.uv.fs_stat(util.ppath(lang)) then return "❌" end
+        if not vim.uv.fs_stat(util.ppath(lang)) and not vim.uv.fs_stat(util.ppath_2(lang)) then return "❌" end
     end
 
     for _, dep in ipairs(installer.get_requires(lang)) do
@@ -82,14 +82,28 @@ function M._act(action)
     local lang = vim.api.nvim_get_current_line():match("^%s*([%w_]+)")
     if not lang or not config.effective_repos[lang] then return end
     local buf = vim.api.nvim_get_current_buf()
+
     if action == "install" then
-        installer.install(lang, function() M.render(buf) end)
+        vim.cmd("TSInstall " .. lang)
+        -- 给安装留点时间，然后刷新界面
+        vim.defer_fn(function()
+            if vim.api.nvim_buf_is_valid(buf) then
+                M.render(buf)
+            end
+        end, 5000)
     elseif action == "remove" then
-        installer.remove(lang)
-        M.render(buf)
+        vim.cmd("TSUninstall " .. lang)
+        -- 卸载是同步的，可以直接刷新
+        if vim.api.nvim_buf_is_valid(buf) then
+            M.render(buf)
+        end
     elseif action == "update" then
-        installer.remove(lang)
-        installer.install(lang, function() M.render(buf) end)
+        vim.cmd("TSUpdate " .. lang)
+        vim.defer_fn(function()
+            if vim.api.nvim_buf_is_valid(buf) then
+                M.render(buf)
+            end
+        end, 500)
     end
 end
 

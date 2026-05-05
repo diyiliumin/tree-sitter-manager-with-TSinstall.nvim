@@ -4,6 +4,7 @@ local M = {}
 
 ---@class tree-sitter-manager.Config
 ---@field parser_dir? string Directory to install compiled parsers into. Defaults to `stdpath('data')/site/parser`.
+---@field parser_dir_2? string Directory to install compiled parsers into. Defaults to `stdpath('data')/site/parser`.
 ---@field query_dir? string Directory to install query files into. Defaults to `stdpath('data')/site/queries`.
 ---@field languages? table<string, string|tree-sitter-manager.LanguageSpec> User-defined language repos to use instead of the built-in ones. Can either be a string (a git URL), or a more detailed LanguageSpec.
 ---@field ensure_installed? string[] Languages to install on `setup()` if not already present.
@@ -26,6 +27,7 @@ local M = {}
 ---@type tree-sitter-manager.Config
 M.cfg = {
     parser_dir = vim.fn.stdpath("data") .. "/site/parser",
+    parser_dir_2 = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter/parser",
     query_dir = vim.fn.stdpath("data") .. "/site/queries",
     languages = {},
     ensure_installed = {},

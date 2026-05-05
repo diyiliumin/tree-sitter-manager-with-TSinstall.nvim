@@ -4,7 +4,7 @@ a fork from tree-sitter-manager.nvim
 
 replacing backend logic like install to nvim-treesitter command, letting you enjoy both the speed and ui
 
-with less dependencies 
+without dependencies from cargo 
 
 # tree-sitter-manager.nvim
 A lightweight Tree-sitter parser manager for Neovim.
